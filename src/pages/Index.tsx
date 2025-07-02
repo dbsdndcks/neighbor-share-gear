@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import FilterPanel from '@/components/FilterPanel';
@@ -53,9 +52,17 @@ const Index = () => {
     );
   };
 
+  const handleSettingsClick = () => {
+    // Settings functionality can be added here
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header onSearch={setSearchQuery} searchQuery={searchQuery} />
+      <Header 
+        onSearch={setSearchQuery} 
+        searchQuery={searchQuery}
+        onSettingsClick={handleSettingsClick}
+      />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* 페이지 타이틀 */}
@@ -63,10 +70,10 @@ const Index = () => {
           <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
             <span>홈</span>
             <span>›</span>
-            <span>중고거래</span>
+            <span>대여서비스</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            서울특별시 용산구 한남동 중고거래
+            서울특별시 용산구 한남동 대여서비스
           </h1>
           
           {/* 뷰 모드 선택 */}
@@ -163,15 +170,42 @@ const Index = () => {
         onRentConfirm={handleRentConfirm}
       />
 
-      {/* 태그 클라우드 */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex flex-wrap gap-2 text-sm text-gray-500">
-          {['인기 검색어', '에어컨', '자전거', '아이폰', '컴퓨터', '냉장고', '세탁기', '책상', '의자', '러닝', '다이슨', '생활용품', '상품전', '노트북', '레고', '바이크', '아이패드', '식탁', '침대', '티비', '블루투스', '스탠드', '가방', '옷걸이', '에어팟', '게임', '모니터', '화장품', '프로덕트', '아이템'].map((tag, index) => (
-            <span key={index} className="hover:text-orange-500 cursor-pointer">
-              {tag}
-              {index < 30 && <span className="ml-2">•</span>}
-            </span>
-          ))}
+      {/* 인기 검색어 태그 */}
+      <div className="bg-white/80 backdrop-blur-md border-t border-gray-200/50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">인기 검색어</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {[
+              '드릴', '사다리', '망치', '톱', '에어컨', '자전거', 
+              '노트북', '컴퓨터', '냉장고', '세탁기', '책상', '의자',
+              '텐트', '캠핑용품', '파티용품', '음향장비', '청소기', '다리미',
+              '프로젝터', '게임기', '운동기구', '골프용품', '낚시용품', '등산용품'
+            ].map((tag, index) => (
+              <button
+                key={index}
+                onClick={() => setSearchQuery(tag)}
+                className="group bg-white/70 backdrop-blur-sm hover:bg-orange-50 hover:border-orange-200 
+                         border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-700 
+                         hover:text-orange-600 transition-all duration-200 text-left
+                         hover:shadow-md hover:scale-105 active:scale-95"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="text-orange-500 group-hover:scale-110 transition-transform">
+                    #
+                  </span>
+                  <span>{tag}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+          
+          {/* 추가 정보 */}
+          <div className="mt-6 pt-6 border-t border-gray-200/50">
+            <p className="text-xs text-gray-500 text-center">
+              공유창고에서 다양한 생활용품을 합리적으로 대여하세요 • 
+              이웃과 함께하는 스마트한 소비문화
+            </p>
+          </div>
         </div>
       </div>
     </div>
