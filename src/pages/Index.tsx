@@ -1,10 +1,12 @@
+
 import React, { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import FilterPanel from '@/components/FilterPanel';
 import ProductCard from '@/components/ProductCard';
 import ChatModal from '@/components/ChatModal';
 import ProductDetailModal from '@/components/ProductDetailModal';
-import MapView from '@/components/MapView';
+import GoogleMapModal from '@/components/GoogleMapModal';
+import MapApiKeyModal from '@/components/MapApiKeyModal';
 import { mockProducts, Product } from '@/data/mockData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +19,9 @@ const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(false);
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+  const [googleMapsApiKey, setGoogleMapsApiKey] = useState('');
   const [products, setProducts] = useState(mockProducts);
 
   const filteredProducts = useMemo(() => {
@@ -53,8 +58,38 @@ const Index = () => {
   };
 
   const handleSettingsClick = () => {
-    // Settings functionality can be added here
+    setIsApiKeyModalOpen(true);
   };
+
+  const handleMapViewClick = () => {
+    if (!googleMapsApiKey) {
+      setIsApiKeyModalOpen(true);
+      return;
+    }
+    setViewMode('map');
+  };
+
+  const handleProductLocationClick = (product: Product) => {
+    if (!googleMapsApiKey) {
+      setIsApiKeyModalOpen(true);
+      return;
+    }
+    setSelectedProduct(product);
+    setIsMapOpen(true);
+  };
+
+  const handleApiKeySet = (apiKey: string) => {
+    setGoogleMapsApiKey(apiKey);
+    localStorage.setItem('googleMapsApiKey', apiKey);
+  };
+
+  // Load API key from localStorage on component mount
+  React.useEffect(() => {
+    const savedApiKey = localStorage.getItem('googleMapsApiKey');
+    if (savedApiKey) {
+      setGoogleMapsApiKey(savedApiKey);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -88,7 +123,7 @@ const Index = () => {
               </Button>
               <Button 
                 variant={viewMode === 'map' ? 'default' : 'outline'}
-                onClick={() => setViewMode('map')}
+                onClick={handleMapViewClick}
                 size="sm"
               >
                 지도보기
@@ -122,20 +157,21 @@ const Index = () => {
           {/* 메인 콘텐츠 */}
           <div className="flex-1">
             {viewMode === 'map' ? (
-              <MapView 
-                products={filteredProducts}
-                onProductClick={handleProductClick}
-              />
+              <div className="bg-white rounded-lg p-8 text-center">
+                <p className="text-gray-500 mb-4">지도 기능은 Google Maps API 키가 필요합니다.</p>
+                <Button onClick={() => setIsApiKeyModalOpen(true)}>
+                  API 키 설정하기
+                </Button>
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredProducts.map((product) => (
-                  <div key={product.id} onClick={() => handleProductClick(product)} className="cursor-pointer">
+                  <div key={product.id}>
                     <ProductCard
                       product={product}
-                      onChatClick={(e) => {
-                        e.stopPropagation();
-                        handleChatClick(product);
-                      }}
+                      onProductClick={() => handleProductClick(product)}
+                      onChatClick={() => handleChatClick(product)}
+                      onLocationClick={() => handleProductLocationClick(product)}
                     />
                   </div>
                 ))}
@@ -168,6 +204,22 @@ const Index = () => {
         onClose={() => setIsChatOpen(false)}
         product={selectedProduct}
         onRentConfirm={handleRentConfirm}
+      />
+
+      {/* Google Maps 모달 */}
+      <GoogleMapModal
+        isOpen={isMapOpen}
+        onClose={() => setIsMapOpen(false)}
+        product={selectedProduct}
+        googleMapsApiKey={googleMapsApiKey}
+      />
+
+      {/* API 키 설정 모달 */}
+      <MapApiKeyModal
+        isOpen={isApiKeyModalOpen}
+        onClose={() => setIsApiKeyModalOpen(false)}
+        onApiKeySet={handleApiKeySet}
+        currentApiKey={googleMapsApiKey}
       />
 
       {/* 인기 검색어 태그 */}
