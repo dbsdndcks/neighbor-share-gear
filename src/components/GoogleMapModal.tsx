@@ -1,8 +1,7 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Loader } from '@googlemaps/js-api-loader';
-import { Item } from '@/types';
+import { Item } from '@/types/index';
 
 interface GoogleMapModalProps {
   isOpen: boolean;
