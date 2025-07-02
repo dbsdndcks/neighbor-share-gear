@@ -1,33 +1,21 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Loader } from '@googlemaps/js-api-loader';
-
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  hourlyRate?: number;
-  location: string;
-  timeAgo: string;
-  image: string;
-  category: string;
-  available: boolean;
-}
+import { Item } from '@/types/index';
 
 interface GoogleMapModalProps {
   isOpen: boolean;
   onClose: () => void;
-  product: Product | null;
+  item: Item | null;
   googleMapsApiKey: string;
 }
 
-const GoogleMapModal = ({ isOpen, onClose, product, googleMapsApiKey }: GoogleMapModalProps) => {
+const GoogleMapModal = ({ isOpen, onClose, item, googleMapsApiKey }: GoogleMapModalProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapError, setMapError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isOpen || !product || !googleMapsApiKey || !mapRef.current) return;
+    if (!isOpen || !item || !googleMapsApiKey || !mapRef.current) return;
 
     const initMap = async () => {
       try {
@@ -52,7 +40,7 @@ const GoogleMapModal = ({ isOpen, onClose, product, googleMapsApiKey }: GoogleMa
         new AdvancedMarkerElement({
           map,
           position,
-          title: product.title,
+          title: item.title,
         });
 
         setMapError(null);
@@ -63,7 +51,7 @@ const GoogleMapModal = ({ isOpen, onClose, product, googleMapsApiKey }: GoogleMa
     };
 
     initMap();
-  }, [isOpen, product, googleMapsApiKey]);
+  }, [isOpen, item, googleMapsApiKey]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -71,7 +59,7 @@ const GoogleMapModal = ({ isOpen, onClose, product, googleMapsApiKey }: GoogleMa
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <span>📍</span>
-            <span>{product?.title} 위치</span>
+            <span>{item?.title} 위치</span>
           </DialogTitle>
         </DialogHeader>
         
@@ -96,14 +84,14 @@ const GoogleMapModal = ({ isOpen, onClose, product, googleMapsApiKey }: GoogleMa
 
         <div className="flex justify-between items-center pt-4 border-t">
           <div>
-            <p className="font-medium">{product?.title}</p>
-            <p className="text-sm text-gray-600">{product?.location}</p>
+            <p className="font-medium">{item?.title}</p>
+            <p className="text-sm text-gray-600">{item?.location}</p>
           </div>
           <div className="text-right">
-            <p className="font-bold text-lg">{product?.price.toLocaleString()}원</p>
-            {product?.hourlyRate && (
+            <p className="font-bold text-lg">{item?.price.toLocaleString()}원</p>
+            {item?.hourlyRate && (
               <p className="text-sm text-orange-500">
-                시간당 {product.hourlyRate.toLocaleString()}원
+                시간당 {item.hourlyRate.toLocaleString()}원
               </p>
             )}
           </div>
