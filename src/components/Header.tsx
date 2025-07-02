@@ -24,18 +24,7 @@ const Header = ({ onSearch, searchQuery }: HeaderProps) => {
             </div>
           </div>
 
-          {/* 네비게이션 */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">중고거래</a>
-            <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">부동산</a>
-            <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">중고차</a>
-            <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">알바</a>
-            <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">동네업체</a>
-            <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">동네생활</a>
-            <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">모임</a>
-          </nav>
-
-          {/* 회원가입 버튼 */}
+          {/* 앱 다운로드 버튼 */}
           <Button className="bg-orange-500 hover:bg-orange-600 text-white">
             앱 다운로드
           </Button>

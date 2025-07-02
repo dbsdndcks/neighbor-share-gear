@@ -17,7 +17,7 @@ interface Product {
 
 interface ProductCardProps {
   product: Product;
-  onChatClick: (product: Product) => void;
+  onChatClick: (event: React.MouseEvent, product: Product) => void;
 }
 
 const ProductCard = ({ product, onChatClick }: ProductCardProps) => {
@@ -60,7 +60,7 @@ const ProductCard = ({ product, onChatClick }: ProductCardProps) => {
         </div>
 
         <Button 
-          onClick={() => onChatClick(product)}
+          onClick={(e) => onChatClick(e, product)}
           className="w-full bg-orange-500 hover:bg-orange-600 text-white"
           disabled={!product.available}
         >

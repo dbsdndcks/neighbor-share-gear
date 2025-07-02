@@ -21,9 +21,10 @@ interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   product: Product | null;
+  onRentConfirm: (productId: string) => void;
 }
 
-const ChatModal = ({ isOpen, onClose, product }: ChatModalProps) => {
+const ChatModal = ({ isOpen, onClose, product, onRentConfirm }: ChatModalProps) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
     {
@@ -33,6 +34,7 @@ const ChatModal = ({ isOpen, onClose, product }: ChatModalProps) => {
       time: '오후 2:30'
     }
   ]);
+  const [showRentButton, setShowRentButton] = useState(false);
 
   const handleSendMessage = () => {
     if (message.trim()) {
@@ -53,14 +55,22 @@ const ChatModal = ({ isOpen, onClose, product }: ChatModalProps) => {
         const autoReply = {
           id: messages.length + 2,
           sender: 'owner',
-          text: '네, 언제 대여 원하시나요? 시간 조율해서 만나뵐게요!',
+          text: '네, 언제 대여 원하시나요? 시간 조율해서 만나뵐게요! 대여 확정하시려면 아래 버튼을 눌러주세요.',
           time: new Date().toLocaleTimeString('ko-KR', { 
             hour: '2-digit', 
             minute: '2-digit' 
           })
         };
         setMessages(prev => [...prev, autoReply]);
+        setShowRentButton(true);
       }, 1000);
+    }
+  };
+
+  const handleRentConfirm = () => {
+    if (product) {
+      onRentConfirm(product.id);
+      onClose();
     }
   };
 
@@ -125,6 +135,16 @@ const ChatModal = ({ isOpen, onClose, product }: ChatModalProps) => {
             </div>
           ))}
         </div>
+
+        {/* 대여 확정 버튼 */}
+        {showRentButton && product.available && (
+          <Button 
+            onClick={handleRentConfirm}
+            className="w-full bg-green-500 hover:bg-green-600 text-white mb-2"
+          >
+            대여 확정하기
+          </Button>
+        )}
 
         {/* 메시지 입력 */}
         <div className="flex space-x-2">

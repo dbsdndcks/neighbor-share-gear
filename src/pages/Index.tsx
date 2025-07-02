@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import FilterPanel from '@/components/FilterPanel';
 import ProductCard from '@/components/ProductCard';
 import ChatModal from '@/components/ChatModal';
+import ProductDetailModal from '@/components/ProductDetailModal';
 import MapView from '@/components/MapView';
 import { mockProducts, Product } from '@/data/mockData';
 import { Button } from '@/components/ui/button';
@@ -16,9 +17,11 @@ const Index = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [products, setProducts] = useState(mockProducts);
 
   const filteredProducts = useMemo(() => {
-    return mockProducts.filter(product => {
+    return products.filter(product => {
       const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
       const matchesLocation = selectedLocation === 'all' || 
@@ -28,16 +31,26 @@ const Index = () => {
       
       return matchesSearch && matchesCategory && matchesLocation;
     });
-  }, [searchQuery, selectedCategory, selectedLocation]);
+  }, [searchQuery, selectedCategory, selectedLocation, products]);
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsDetailOpen(true);
+  };
 
   const handleChatClick = (product: Product) => {
     setSelectedProduct(product);
     setIsChatOpen(true);
   };
 
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
-    setIsChatOpen(true);
+  const handleRentConfirm = (productId: string) => {
+    setProducts(prevProducts => 
+      prevProducts.map(product => 
+        product.id === productId 
+          ? { ...product, available: false }
+          : product
+      )
+    );
   };
 
   return (
@@ -109,11 +122,15 @@ const Index = () => {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onChatClick={handleChatClick}
-                  />
+                  <div key={product.id} onClick={() => handleProductClick(product)} className="cursor-pointer">
+                    <ProductCard
+                      product={product}
+                      onChatClick={(e) => {
+                        e.stopPropagation();
+                        handleChatClick(product);
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
             )}
@@ -130,11 +147,20 @@ const Index = () => {
         </div>
       </div>
 
+      {/* 상품 상세 모달 */}
+      <ProductDetailModal
+        isOpen={isDetailOpen}
+        onClose={() => setIsDetailOpen(false)}
+        product={selectedProduct}
+        onChatClick={handleChatClick}
+      />
+
       {/* 채팅 모달 */}
       <ChatModal
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
         product={selectedProduct}
+        onRentConfirm={handleRentConfirm}
       />
 
       {/* 태그 클라우드 */}
