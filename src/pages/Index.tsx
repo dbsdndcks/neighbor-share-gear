@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedLocation, setSelectedLocation] = useState('hannam');
+  const [selectedLocation, setSelectedLocation] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -22,9 +22,31 @@ const Index = () => {
       const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
       const matchesLocation = selectedLocation === 'all' || 
-        (selectedLocation === 'hannam' && product.location === '한남동') ||
+        (selectedLocation === 'gangnam' && product.location === '강남구') ||
+        (selectedLocation === 'gangdong' && product.location === '강동구') ||
+        (selectedLocation === 'gangbuk' && product.location === '강북구') ||
+        (selectedLocation === 'gangseo' && product.location === '강서구') ||
+        (selectedLocation === 'gwanak' && product.location === '관악구') ||
+        (selectedLocation === 'gwangjin' && product.location === '광진구') ||
+        (selectedLocation === 'guro' && product.location === '구로구') ||
+        (selectedLocation === 'geumcheon' && product.location === '금천구') ||
+        (selectedLocation === 'nowon' && product.location === '노원구') ||
+        (selectedLocation === 'dobong' && product.location === '도봉구') ||
+        (selectedLocation === 'dongdaemun' && product.location === '동대문구') ||
+        (selectedLocation === 'dongjak' && product.location === '동작구') ||
+        (selectedLocation === 'mapo' && product.location === '마포구') ||
+        (selectedLocation === 'seodaemun' && product.location === '서대문구') ||
+        (selectedLocation === 'seocho' && product.location === '서초구') ||
+        (selectedLocation === 'seongdong' && product.location === '성동구') ||
+        (selectedLocation === 'seongbuk' && product.location === '성북구') ||
+        (selectedLocation === 'songpa' && product.location === '송파구') ||
+        (selectedLocation === 'yangcheon' && product.location === '양천구') ||
+        (selectedLocation === 'yeongdeungpo' && product.location === '영등포구') ||
         (selectedLocation === 'yongsan' && product.location === '용산구') ||
-        (selectedLocation === 'gangnam' && product.location === '강남구');
+        (selectedLocation === 'eunpyeong' && product.location === '은평구') ||
+        (selectedLocation === 'jongno' && product.location === '종로구') ||
+        (selectedLocation === 'jung' && product.location === '중구') ||
+        (selectedLocation === 'jungnang' && product.location === '중랑구');
       
       return matchesSearch && matchesCategory && matchesLocation;
     });
@@ -54,12 +76,46 @@ const Index = () => {
     // Settings functionality can be added here
   };
 
+  const getLocationLabel = (locationValue: string) => {
+    const locationMap: { [key: string]: string } = {
+      'all': '전체 지역',
+      'gangnam': '강남구',
+      'gangdong': '강동구',
+      'gangbuk': '강북구',
+      'gangseo': '강서구',
+      'gwanak': '관악구',
+      'gwangjin': '광진구',
+      'guro': '구로구',
+      'geumcheon': '금천구',
+      'nowon': '노원구',
+      'dobong': '도봉구',
+      'dongdaemun': '동대문구',
+      'dongjak': '동작구',
+      'mapo': '마포구',
+      'seodaemun': '서대문구',
+      'seocho': '서초구',
+      'seongdong': '성동구',
+      'seongbuk': '성북구',
+      'songpa': '송파구',
+      'yangcheon': '양천구',
+      'yeongdeungpo': '영등포구',
+      'yongsan': '용산구',
+      'eunpyeong': '은평구',
+      'jongno': '종로구',
+      'jung': '중구',
+      'jungnang': '중랑구',
+    };
+    return locationMap[locationValue] || '전체 지역';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header 
         onSearch={setSearchQuery} 
         searchQuery={searchQuery}
         onSettingsClick={handleSettingsClick}
+        selectedLocation={selectedLocation}
+        onLocationChange={setSelectedLocation}
       />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -71,7 +127,7 @@ const Index = () => {
             <span>대여서비스</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            서울특별시 용산구 한남동 대여서비스
+            {getLocationLabel(selectedLocation)} 대여서비스
           </h1>
           
           {/* 검색 결과 정보 */}
@@ -161,13 +217,13 @@ const Index = () => {
               <button
                 key={index}
                 onClick={() => setSearchQuery(tag)}
-                className="group bg-white/70 backdrop-blur-sm hover:bg-orange-50 hover:border-orange-200 
+                className="group bg-white/70 backdrop-blur-sm hover:bg-emerald-50 hover:border-emerald-200 
                          border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-700 
-                         hover:text-orange-600 transition-all duration-200 text-left
+                         hover:text-emerald-600 transition-all duration-200 text-left
                          hover:shadow-md hover:scale-105 active:scale-95"
               >
                 <div className="flex items-center space-x-2">
-                  <span className="text-orange-500 group-hover:scale-110 transition-transform">
+                  <span className="text-emerald-500 group-hover:scale-110 transition-transform">
                     #
                   </span>
                   <span>{tag}</span>

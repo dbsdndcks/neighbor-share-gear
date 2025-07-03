@@ -22,7 +22,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, onChatClick }: ProductCardProps) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
       <div className="aspect-square bg-gray-100 relative">
         <img 
           src={product.image} 
@@ -38,34 +38,36 @@ const ProductCard = ({ product, onChatClick }: ProductCardProps) => {
         )}
       </div>
       
-      <div className="p-4">
-        <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="font-medium text-gray-900 mb-2 line-clamp-2 flex-shrink-0">
           {product.title}
         </h3>
         
-        <div className="space-y-1 mb-3">
+        <div className="space-y-1 mb-3 flex-shrink-0">
           <p className="text-lg font-bold text-gray-900">
             {product.price.toLocaleString()}원
           </p>
           {product.hourlyRate && (
-            <p className="text-sm text-orange-500">
+            <p className="text-sm text-emerald-500">
               시간당 {product.hourlyRate.toLocaleString()}원
             </p>
           )}
         </div>
         
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-3 flex-shrink-0">
           <span>{product.location}</span>
           <span>{product.timeAgo}</span>
         </div>
 
-        <Button 
-          onClick={(e) => onChatClick(e, product)}
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-          disabled={!product.available}
-        >
-          {product.available ? '채팅하기' : '대여중'}
-        </Button>
+        <div className="mt-auto">
+          <Button 
+            onClick={(e) => onChatClick(e, product)}
+            className="w-full bg-emerald-500 hover:bg-emerald-600 text-white"
+            disabled={!product.available}
+          >
+            {product.available ? '채팅하기' : '대여중'}
+          </Button>
+        </div>
       </div>
     </div>
   );

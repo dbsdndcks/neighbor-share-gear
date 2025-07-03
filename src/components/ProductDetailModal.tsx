@@ -77,7 +77,7 @@ const ProductDetailModal = ({ isOpen, onClose, product, onChatClick }: ProductDe
             {/* 가격 정보 */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-orange-500">
+                <span className="text-2xl font-bold text-emerald-500">
                   {product.price.toLocaleString()}원
                 </span>
                 <Badge 
@@ -88,7 +88,7 @@ const ProductDetailModal = ({ isOpen, onClose, product, onChatClick }: ProductDe
                 </Badge>
               </div>
               {product.hourlyRate && (
-                <p className="text-lg text-orange-600">
+                <p className="text-lg text-emerald-600">
                   시간당 {product.hourlyRate.toLocaleString()}원
                 </p>
               )}
@@ -98,7 +98,7 @@ const ProductDetailModal = ({ isOpen, onClose, product, onChatClick }: ProductDe
             <div className="space-y-4">
               <button
                 onClick={handleMapClick}
-                className="flex items-center space-x-3 text-gray-600 hover:text-orange-500 transition-colors cursor-pointer w-full text-left"
+                className="flex items-center space-x-3 text-gray-600 hover:text-emerald-500 transition-colors cursor-pointer w-full text-left"
               >
                 <MapPin className="w-5 h-5" />
                 <span>{product.location} (지도에서 보기)</span>
@@ -133,7 +133,7 @@ const ProductDetailModal = ({ isOpen, onClose, product, onChatClick }: ProductDe
             <div className="flex space-x-3">
               <Button 
                 onClick={() => onChatClick(product)}
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white"
                 disabled={!product.available}
               >
                 {product.available ? '채팅하기' : '대여중'}

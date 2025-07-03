@@ -9,7 +9,134 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      rental_items: {
+        Row: {
+          available_quantity: number
+          category: string
+          created_at: string
+          daily_rate: number | null
+          description: string | null
+          hourly_rate: number | null
+          id: string
+          image_url: string | null
+          location: string
+          original_price: number
+          owner_id: string
+          quantity: number
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          available_quantity?: number
+          category: string
+          created_at?: string
+          daily_rate?: number | null
+          description?: string | null
+          hourly_rate?: number | null
+          id?: string
+          image_url?: string | null
+          location: string
+          original_price: number
+          owner_id: string
+          quantity?: number
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          available_quantity?: number
+          category?: string
+          created_at?: string
+          daily_rate?: number | null
+          description?: string | null
+          hourly_rate?: number | null
+          id?: string
+          image_url?: string | null
+          location?: string
+          original_price?: number
+          owner_id?: string
+          quantity?: number
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rentals: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          id: string
+          item_id: string
+          owner_id: string
+          renter_id: string
+          start_date: string
+          status: string
+          total_cost: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          item_id: string
+          owner_id: string
+          renter_id: string
+          start_date: string
+          status?: string
+          total_cost?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          item_id?: string
+          owner_id?: string
+          renter_id?: string
+          start_date?: string
+          status?: string
+          total_cost?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rentals_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "rental_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
