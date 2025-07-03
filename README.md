@@ -100,4 +100,4 @@
 
 
 ## URL
-https://share-neighbor-stuff.lovable.app
+https://neighbor-share-gear.lovable.app
