@@ -1,19 +1,17 @@
+
 import React, { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import FilterPanel from '@/components/FilterPanel';
 import ProductCard from '@/components/ProductCard';
 import ChatModal from '@/components/ChatModal';
 import ProductDetailModal from '@/components/ProductDetailModal';
-import MapView from '@/components/MapView';
 import { mockProducts, Product } from '@/data/mockData';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('hannam');
-  const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -76,29 +74,15 @@ const Index = () => {
             서울특별시 용산구 한남동 대여서비스
           </h1>
           
-          {/* 뷰 모드 선택 */}
+          {/* 검색 결과 정보 */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Button 
-                variant={viewMode === 'grid' ? 'default' : 'outline'}
-                onClick={() => setViewMode('grid')}
-                size="sm"
-              >
-                목록보기
-              </Button>
-              <Button 
-                variant={viewMode === 'map' ? 'default' : 'outline'}
-                onClick={() => setViewMode('map')}
-                size="sm"
-              >
-                지도보기
-              </Button>
-            </div>
-            
             <div className="flex items-center space-x-2">
               <Badge variant="outline">
                 총 {filteredProducts.length}개
               </Badge>
+            </div>
+            
+            <div className="flex items-center space-x-2">
               <select className="text-sm border border-gray-200 rounded px-3 py-1">
                 <option>최신순</option>
                 <option>가격낮은순</option>
@@ -119,28 +103,21 @@ const Index = () => {
             />
           </div>
 
-          {/* 메인 콘텐츠 */}
+          {/* 메인 콘텐츠 - 그리드 뷰만 */}
           <div className="flex-1">
-            {viewMode === 'map' ? (
-              <MapView 
-                products={filteredProducts}
-                onProductClick={handleProductClick}
-              />
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
-                  <div key={product.id} onClick={() => handleProductClick(product)} className="cursor-pointer">
-                    <ProductCard
-                      product={product}
-                      onChatClick={(e) => {
-                        e.stopPropagation();
-                        handleChatClick(product);
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredProducts.map((product) => (
+                <div key={product.id} onClick={() => handleProductClick(product)} className="cursor-pointer">
+                  <ProductCard
+                    product={product}
+                    onChatClick={(e) => {
+                      e.stopPropagation();
+                      handleChatClick(product);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
 
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">

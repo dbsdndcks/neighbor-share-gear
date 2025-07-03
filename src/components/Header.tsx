@@ -25,7 +25,7 @@ const Header = ({ onSearch, searchQuery, onSettingsClick }: HeaderProps) => {
             </div>
           </div>
 
-          {/* 설정 및 앱 다운로드 */}
+          {/* 설정 버튼만 남김 */}
           <div className="flex items-center space-x-3">
             <Button 
               variant="ghost" 
@@ -34,9 +34,6 @@ const Header = ({ onSearch, searchQuery, onSettingsClick }: HeaderProps) => {
               className="p-2"
             >
               <Settings className="w-5 h-5" />
-            </Button>
-            <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg">
-              앱 다운로드
             </Button>
           </div>
         </div>
